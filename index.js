@@ -7,6 +7,7 @@
 
 var url = require('url');
 var http = require('http');
+var request = require("browser-request");
 var querystring = require('querystring');
 var extend = require('./extend');
 
@@ -43,7 +44,7 @@ AlchemyAPI.prototype._getMethodType = function(method){
 	var results = regex.exec(method);
 	if(results != null){
 		return results[0].toLowerCase();
-	}
+	} 
 	
 	return "";
 };
@@ -79,7 +80,6 @@ AlchemyAPI.prototype._generateNiceUrl = function(query, options, method) {
   return result;
 };
 
-
 /**
  * Function to do a HTTP request with the current query
  * @param  {Object} request_query The current query object
@@ -92,6 +92,22 @@ AlchemyAPI.prototype._doRequest = function(request_query, cb) {
   
   //var server = http.createClient(80, this.config.api_url);
   //console.log(request_query.nice.path);
+
+  // Attempting to use browser-request instead of http and url...
+  // TODO 
+  console.log(request_query);
+
+  request(request_query.nice.href, function(err, res, body) {
+    if (err) cb(new Error("response.error: " + err), null);
+    try{
+      result = JSON.parse(body);
+    } catch(exp) {
+      result = {'status_code': 500, 'status_text': 'JSON Parse Failed'};
+    }
+    cb(null, result);
+  });
+
+  /*
   var req = http.request(request_query.nice, function(res) {
      var data = [];
      res
@@ -127,10 +143,7 @@ AlchemyAPI.prototype._doRequest = function(request_query, cb) {
 		req.end(querystring.stringify(request_query.post));
   } else {
 		req.end();
-  }
-
-  
-
+  }*/
 };
 
 
@@ -180,7 +193,7 @@ AlchemyAPI.prototype._getQuery = function(data, opts, method) {
 	
 	if(this._urlCheck(data)){
 		query.apimethod = "URL" + method;
-		httpMethod = "GET";
+		httpMethod = "POST";
 		options.url = data;
 		query.headers = {
 			'content-length': '0'
