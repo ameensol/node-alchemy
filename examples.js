@@ -7,5 +7,5 @@ alchemy.entities('http://www.washingtonpost.com/blogs/post-politics/wp/2013/04/1
   var entities = response.entities;
 
   console.log(entities);
-  // Do something with data
+  // Do something with data 
 });

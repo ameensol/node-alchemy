@@ -6,7 +6,6 @@
  */
 
 var url = require('url');
-var http = require('http');
 var request = require("browser-request");
 var querystring = require('querystring');
 var extend = require('./extend');
@@ -106,44 +105,6 @@ AlchemyAPI.prototype._doRequest = function(request_query, cb) {
     }
     cb(null, result);
   });
-
-  /*
-  var req = http.request(request_query.nice, function(res) {
-     var data = [];
-     res
-      .on('data', function(chunk) { data.push(chunk); })
-      .on('end', function() {
-          var urldata = data.join('').trim();
-		  //console.log(urldata);
-          var result;
-          try {
-            result = JSON.parse(urldata);
-          } catch (exp) {
-			//console.log(request_query.nice.href);
-			//console.log(querystring.stringify(request_query.post));
-			//console.log(urldata);
-			//console.log(urldata);
-            result = {'status_code': 500, 'status_text': 'JSON Parse Failed'};
-          }
-		  //console.log(result);
-          cb(null, result);
-      })
-	 .on("error", function (err) {
-		//console.log('response error : ' + err);
-		cb(new Error("response.error: " + err), null);	
-	  });
-
-  });
-  
-  req.on("error", function (err) {
-		cb(new Error("request.error: " + err), null);
-  });
-
-  if(req.method == "POST") {
-		req.end(querystring.stringify(request_query.post));
-  } else {
-		req.end();
-  }*/
 };
 
 
