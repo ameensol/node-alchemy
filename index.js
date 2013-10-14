@@ -95,7 +95,7 @@ AlchemyAPI.prototype._doRequest = function(request_query, cb) {
 
   // Attempting to use browser-request instead of http and url...
   // TODO 
-  console.log(request_query);
+  // console.log(request_query);
 
   request(request_query.nice.href, function(err, res, body) {
     if (err) cb(new Error("response.error: " + err), null);
